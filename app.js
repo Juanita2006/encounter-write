@@ -9,7 +9,7 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
 
     const encounter = {
         resourceType: "Encounter",
-        status: status,
+        status: "in progress",
         identifier: [
             {
                 system: identifierSystem,
