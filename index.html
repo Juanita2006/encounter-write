@@ -1,127 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario de Encuentro Clínico - HL7 FHIR</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulario Encuentro Clínico - HL7 FHIR</title>
 </head>
 <body>
-  <h1>Crear Encuentro Clínico HL7 FHIR</h1>
+  <h1>Crear Encuentro Clínico (FHIR)</h1>
 
   <form id="encounterForm">
     <label for="identifierSystem">Tipo de Documento:</label>
-    <select id="identifierSystem" name="identifierSystem" required>
-      <option value="http://cedula">Cédula de Ciudadanía</option>
+    <select id="identifierSystem" required>
+      <option value="http://cedula">Cédula</option>
       <option value="http://pasaporte">Pasaporte</option>
     </select><br><br>
 
     <label for="identifierValue">Número de Documento:</label>
-    <input type="text" id="identifierValue" name="identifierValue" required><br><br>
+    <input type="text" id="identifierValue" required><br><br>
 
     <label for="status">Estado del Encuentro:</label>
-    <select id="status" name="status" required>
-      <option value="planned">Planeado</option>
-      <option value="in-progress">En curso</option>
+    <select id="status" required>
+      <option value="planned">Planificado</option>
+      <option value="in-progress">En progreso</option>
       <option value="finished">Finalizado</option>
       <option value="cancelled">Cancelado</option>
     </select><br><br>
 
     <label for="classCode">Código de Clase:</label>
-    <select id="classCode" name="classCode" required>
-      <option value="AMB">Ambulatorio</option>
-      <option value="IMP">Hospitalización</option>
-      <option value="EMER">Emergencia</option>
-    </select><br><br>
+    <input type="text" id="classCode" required><br><br>
 
-    <label for="classDisplay">Tipo de Encuentro:</label>
-    <input type="text" id="classDisplay" name="classDisplay" required placeholder="Ej: Consulta Externa"><br><br>
+    <label for="classDisplay">Descripción Clase:</label>
+    <input type="text" id="classDisplay" required><br><br>
 
     <label for="startDateTime">Fecha y Hora de Inicio:</label>
-    <input type="datetime-local" id="startDateTime" name="startDateTime" required><br><br>
+    <input type="datetime-local" id="startDateTime" required><br><br>
 
     <label for="endDateTime">Fecha y Hora de Fin:</label>
-    <input type="datetime-local" id="endDateTime" name="endDateTime" required><br><br>
+    <input type="datetime-local" id="endDateTime" required><br><br>
 
     <label for="participantType">Rol del Participante:</label>
-    <select id="participantType" name="participantType" required>
-      <option value="practitioner">Médico</option>
-      <option value="nurse">Enfermero/a</option>
-      <option value="related-person">Familiar</option>
-    </select><br><br>
+    <input type="text" id="participantType" required><br><br>
 
     <label for="participantActor">Nombre del Participante:</label>
-    <input type="text" id="participantActor" name="participantActor" required><br><br>
+    <input type="text" id="participantActor" required><br><br>
 
     <label for="patientId">ID del Paciente:</label>
-    <input type="text" id="patientId" name="patientId" required placeholder="1013108066"><br><br>
+    <input type="text" id="patientId" placeholder="Ej: 1013108066" required><br><br>
 
     <button type="submit">Crear Encuentro</button>
   </form>
 
-  <script>
-    document.getElementById('encounterForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      // Obtener los valores del formulario
-      const identifierSystem = document.getElementById('identifierSystem').value;
-      const identifierValue = document.getElementById('identifierValue').value;
-      const status = document.getElementById('status').value;
-      const classCode = document.getElementById('classCode').value;
-      const classDisplay = document.getElementById('classDisplay').value;
-      const startDateTime = document.getElementById('startDateTime').value;
-      const endDateTime = document.getElementById('endDateTime').value;
-      const participantType = document.getElementById('participantType').value;
-      const participantActor = document.getElementById('participantActor').value;
-      const patientId = document.getElementById('patientId').value;
-
-      // Crear el objeto Encounter en formato FHIR
-      const encounter = {
-        resourceType: "Encounter",
-        status: status,
-        identifier: [{
-          system: identifierSystem,
-          value: identifierValue
-        }],
-        class: {
-          system: "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-          code: classCode,
-          display: classDisplay
-        },
-        subject: {
-          reference: `Patient/${patientId}`
-        },
-        period: {
-          start: new Date(startDateTime).toISOString(),
-          end: new Date(endDateTime).toISOString()
-        },
-        participant: [{
-          type: [{
-            text: participantType
-          }],
-          individual: {
-            display: participantActor
-          }
-        }]
-      };
-
-      // Enviar los datos usando Fetch API
-      fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/encounter', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(encounter)
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        alert('¡Encuentro clínico creado exitosamente!');
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        alert('Hubo un error al crear el encuentro clínico.');
-      });
-    });
-  </script>
+  <!-- Importar el script de la app -->
+  <script src="app.js"></script>
 </body>
 </html>
