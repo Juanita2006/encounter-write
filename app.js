@@ -4,41 +4,30 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
     const identifierSystem = document.getElementById('identifierSystem').value;
     const identifierValue = document.getElementById('identifierValue').value;
     const status = document.getElementById('status').value;
-    const classCode = document.getElementById('classCode').value;
-    const classDisplay = document.getElementById('classDisplay').value;
-    const startDateTime = new Date(document.getElementById('startDateTime').value).toISOString();
-    const endDateTime = new Date(document.getElementById('endDateTime').value).toISOString();
     const participantType = document.getElementById('participantType').value;
-    const participantActor = document.getElementById('participantActor').value;
     const patientId = document.getElementById('patientId').value;
 
     const encounter = {
         resourceType: "Encounter",
         status: status,
-        identifier: [{
-            system: identifierSystem,
-            value: identifierValue
-        }],
-        class: {
-            system: "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-            code: classCode,
-            display: classDisplay
-        },
+        identifier: [
+            {
+                system: identifierSystem,
+                value: identifierValue
+            }
+        ],
         subject: {
             reference: `Patient/${patientId}`
         },
-        period: {
-            start: startDateTime,
-            end: endDateTime
-        },
-        participant: [{
-            type: [{
-                text: participantType
-            }],
-            individual: {
-                display: participantActor
+        participant: [
+            {
+                type: [
+                    {
+                        text: participantType
+                    }
+                ]
             }
-        }]
+        ]
     };
 
     fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/encounter', {
@@ -61,5 +50,6 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
         alert('Error al crear el encuentro clínico. Revisa la consola.');
     });
 });
+
 
 
