@@ -1,45 +1,83 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Crear Encuentro Clínico</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Encuentro Clínico</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Formulario de Encuentro Clínico FHIR</h1>
+    <div class="container">
+        <h1>Crear Encuentro Clínico</h1>
 
-  <form id="encounterForm">
-    <label for="identifierSystem">Sistema de Identificación:</label>
-    <select id="identifierSystem" required>
-      <option value="http://cedula">Cédula</option>
-      <option value="http://pasaporte">Pasaporte</option>
-    </select><br><br>
+        <form id="encounterForm">
+            <label for="identifierSystem">Sistema de Identificador:</label>
+            <input type="text" id="identifierSystem" name="identifierSystem" required>
 
-    <label for="identifierValue">Número de Identificación:</label>
-    <input type="text" id="identifierValue" required /><br><br>
+            <label for="identifierValue">Valor de Identificador:</label>
+            <input type="text" id="identifierValue" name="identifierValue" required>
 
-    <label for="status">Estado:</label>
-    <select id="status" required>
-      <option value="planned">Planeado</option>
-      <option value="in-progress">En progreso</option>
-      <option value="finished">Finalizado</option>
-      <option value="cancelled">Cancelado</option>
-    </select><br><br>
+            <label for="status">Estado del Encuentro:</label>
+            <select id="status" name="status">
+                <option value="in progress">En Progreso</option>
+                <option value="finished">Terminado</option>
+                <option value="on hold">En Espera</option>
+            </select>
 
-    <label for="participantType">Tipo de Participante:</label>
-    <select id="participantType" required>
-      <option value="practitioner">Médico</option>
-      <option value="patient">Paciente</option>
-      <option value="related-person">Familiar</option>
-    </select><br><br>
+            <label for="participantType">Tipo de Participante:</label>
+            <input type="text" id="participantType" name="participantType" required>
 
-    <label for="patientId">ID del Paciente:</label>
-    <input type="text" id="patientId" required placeholder="Ej: 1013108066"/><br><br>
+            <label for="patientId">ID del Paciente:</label>
+            <input type="text" id="patientId" name="patientId" required>
 
-    <button type="submit">Enviar Encuentro</button>
-  </form>
+            <button type="submit">Crear Encuentro</button>
+        </form>
 
-  <script src="app.js"></script>
+        <div id="message"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Encuentro Clínico</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Crear Encuentro Clínico</h1>
+
+        <form id="encounterForm">
+            <label for="identifierSystem">Sistema de Identificador:</label>
+            <input type="text" id="identifierSystem" name="identifierSystem" required>
+
+            <label for="identifierValue">Valor de Identificador:</label>
+            <input type="text" id="identifierValue" name="identifierValue" required>
+
+            <label for="status">Estado del Encuentro:</label>
+            <select id="status" name="status">
+                <option value="in progress">En Progreso</option>
+                <option value="finished">Terminado</option>
+                <option value="on hold">En Espera</option>
+            </select>
+
+            <label for="participantType">Tipo de Participante:</label>
+            <input type="text" id="participantType" name="participantType" required>
+
+            <label for="patientId">ID del Paciente:</label>
+            <input type="text" id="patientId" name="patientId" required>
+
+            <button type="submit">Crear Encuentro</button>
+        </form>
+
+        <div id="message"></div>
+    </div>
+
+    <script src="app.js"></script>
 </body>
 </html>
 
