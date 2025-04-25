@@ -1,52 +1,71 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Crear Encounter HL7 FHIR</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulario de Encuentro Clínico</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f4f4f4;
+      border-radius: 8px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 <body>
-  <h1>Formulario Encounter - HL7 FHIR</h1>
-
+  <h2>Formulario de Encuentro Clínico</h2>
   <form id="encounterForm">
-    <label for="identifierSystem">Sistema del Identificador:</label>
-    <input type="text" id="identifierSystem" required><br><br>
+    <label for="identifierSystem">Sistema de Identificación</label>
+    <input id="identifierSystem" placeholder="http://cedula" required />
 
-    <label for="identifierValue">Valor del Identificador:</label>
-    <input type="text" id="identifierValue" required><br><br>
+    <label for="identifierValue">Valor de Identificación</label>
+    <input id="identifierValue" placeholder="1013108066" required />
 
-    <label for="status">Estado:</label>
-    <select id="status" required>
-      <option value="planned">Planificado</option>
-      <option value="in-progress">En Progreso</option>
-      <option value="finished">Finalizado</option>
-    </select><br><br>
+    <label for="status">Estado del Encuentro</label>
+    <input id="status" placeholder="in-progress" required />
 
-    <label for="classCode">Código de Clase:</label>
-    <input type="text" id="classCode" placeholder="AMB" required><br><br>
+    <label for="participantType">Tipo de Participante</label>
+    <input id="participantType" placeholder="Médico Tratante" required />
 
-    <label for="classDisplay">Descripción de Clase:</label>
-    <input type="text" id="classDisplay" placeholder="Ambulatorio" required><br><br>
+    <label for="patientId">ID del Paciente</label>
+    <input id="patientId" placeholder="1013108066" required />
 
-    <label for="startDateTime">Inicio:</label>
-    <input type="datetime-local" id="startDateTime" required><br><br>
-
-    <label for="endDateTime">Fin:</label>
-    <input type="datetime-local" id="endDateTime" required><br><br>
-
-    <label for="participantType">Tipo de Participante:</label>
-    <input type="text" id="participantType" placeholder="Médico" required><br><br>
-
-    <label for="participantActor">Nombre del Participante:</label>
-    <input type="text" id="participantActor" required><br><br>
-
-    <label for="patientId">ID del Paciente (ej: 1010101010):</label>
-    <input type="text" id="patientId" required><br><br>
-
-    <button type="submit">Crear Encounter</button>
+    <button type="submit">Crear Encuentro</button>
   </form>
-
-  <script src="app.js"></script>
 </body>
 </html>
 
