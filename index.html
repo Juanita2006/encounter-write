@@ -1,56 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Formulario Encuentro Clínico - HL7 FHIR</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Encounter HL7 FHIR</title>
 </head>
 <body>
-  <h1>Crear Encuentro Clínico (FHIR)</h1>
+  <h1>Formulario Encounter - HL7 FHIR</h1>
 
   <form id="encounterForm">
-    <label for="identifierSystem">Tipo de Documento:</label>
-    <select id="identifierSystem" required>
-      <option value="http://cedula">Cédula</option>
-      <option value="http://pasaporte">Pasaporte</option>
-    </select><br><br>
+    <label for="identifierSystem">Sistema del Identificador:</label>
+    <input type="text" id="identifierSystem" required><br><br>
 
-    <label for="identifierValue">Número de Documento:</label>
+    <label for="identifierValue">Valor del Identificador:</label>
     <input type="text" id="identifierValue" required><br><br>
 
-    <label for="status">Estado del Encuentro:</label>
+    <label for="status">Estado:</label>
     <select id="status" required>
       <option value="planned">Planificado</option>
-      <option value="in-progress">En progreso</option>
+      <option value="in-progress">En Progreso</option>
       <option value="finished">Finalizado</option>
-      <option value="cancelled">Cancelado</option>
     </select><br><br>
 
     <label for="classCode">Código de Clase:</label>
-    <input type="text" id="classCode" required><br><br>
+    <input type="text" id="classCode" placeholder="AMB" required><br><br>
 
-    <label for="classDisplay">Descripción Clase:</label>
-    <input type="text" id="classDisplay" required><br><br>
+    <label for="classDisplay">Descripción de Clase:</label>
+    <input type="text" id="classDisplay" placeholder="Ambulatorio" required><br><br>
 
-    <label for="startDateTime">Fecha y Hora de Inicio:</label>
+    <label for="startDateTime">Inicio:</label>
     <input type="datetime-local" id="startDateTime" required><br><br>
 
-    <label for="endDateTime">Fecha y Hora de Fin:</label>
+    <label for="endDateTime">Fin:</label>
     <input type="datetime-local" id="endDateTime" required><br><br>
 
-    <label for="participantType">Rol del Participante:</label>
-    <input type="text" id="participantType" required><br><br>
+    <label for="participantType">Tipo de Participante:</label>
+    <input type="text" id="participantType" placeholder="Médico" required><br><br>
 
     <label for="participantActor">Nombre del Participante:</label>
     <input type="text" id="participantActor" required><br><br>
 
-    <label for="patientId">ID del Paciente:</label>
-    <input type="text" id="patientId" placeholder="Ej: 1013108066" required><br><br>
+    <label for="patientId">ID del Paciente (ej: 1010101010):</label>
+    <input type="text" id="patientId" required><br><br>
 
-    <button type="submit">Crear Encuentro</button>
+    <button type="submit">Crear Encounter</button>
   </form>
 
-  <!-- Importar el script de la app -->
   <script src="app.js"></script>
 </body>
 </html>
+
