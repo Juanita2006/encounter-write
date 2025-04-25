@@ -7,15 +7,9 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
     const participantType = document.getElementById('participantType').value;
     const patientId = document.getElementById('patientId').value;
 
-    // Validaciones
-    if (!identifierSystem || !identifierValue || !patientId || !participantType) {
-        alert("Por favor, completa todos los campos.");
-        return;
-    }
-
     const encounter = {
         resourceType: "Encounter",
-        status: status || "in progress",  // Si no se seleccionó status, se usa "in progress"
+        status: "in progress",
         identifier: [
             {
                 system: identifierSystem,
@@ -23,7 +17,7 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
             }
         ],
         subject: {
-            reference: `Patient/${patientId}`
+            reference: Patient/${patientId}
         },
         participant: [
             {
@@ -44,9 +38,7 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
         body: JSON.stringify(encounter)
     })
     .then(response => {
-        if (!response.ok) {
-            throw new Error(`Error en la solicitud: ${response.statusText}`);
-        }
+        if (!response.ok) throw new Error("Error en la solicitud");
         return response.json();
     })
     .then(data => {
