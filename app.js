@@ -8,27 +8,28 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
     const patientId = document.getElementById('patientId').value;
 
     const encounter = {
-      resourceType: "Encounter",
-      status: status,  // Variable que debes definir
-      identifier: [
-        {
-          system: identifierSystem,  // Variable que debes definir
-          value: identifierValue     // Variable que debes definir
-        }
-      ],
-      subject: {
-        reference: `Patient/${patientId}`  // Variable que debes definir
-      },
-      participant: [
-        {
-          type: [
+        resourceType: "Encounter",
+        status: encounterStatus,
+        identifier: [
             {
-              text: participantType  // Variable que debes definir
+                system: identifierSystem,
+                value: identifierValue
             }
-          ]
-        }
-      ]
+        ],
+        subject: {
+            reference: "Patient/" + patientId
+        },
+        participant: [
+            {
+                type: [
+                    {
+                        text: participantRole
+                    }
+                ]
+            }
+        ]
     };
+
     
     fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/encounter', {
         method: 'POST',
