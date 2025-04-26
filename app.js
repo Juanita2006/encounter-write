@@ -9,28 +9,27 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
 
     const encounter = {
       resourceType: "Encounter",
-      status: "in-progress",
+      status: status,  // Variable que debes definir
       identifier: [
         {
-          system: "http://cedula",
-          value: "1013108066"
+          system: identifierSystem,  // Variable que debes definir
+          value: identifierValue     // Variable que debes definir
         }
       ],
       subject: {
-        reference: "Patient/1013108066"
+        reference: `Patient/${patientId}`  // Variable que debes definir
       },
       participant: [
         {
           type: [
             {
-              text: "Médico Tratante"
+              text: participantType  // Variable que debes definir
             }
           ]
         }
       ]
     };
-
-
+    
     fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/encounter', {
         method: 'POST',
         headers: {
