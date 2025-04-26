@@ -9,7 +9,7 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
 
     const encounter = {
         resourceType: "Encounter",
-        status: encounterStatus,
+        status: status,
         identifier: [
             {
                 system: identifierSystem,
@@ -23,7 +23,7 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
             {
                 type: [
                     {
-                        text: participantRole
+                        text: participantType
                     }
                 ]
             }
