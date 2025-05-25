@@ -2,28 +2,84 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Crear Encounter</title>
+    <title>Registro de Encuentro Clínico (HIS1)</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #2c3e50; }
+        .form-section { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .form-section h2 { margin-top: 0; color: #3498db; }
+        label { display: block; margin-top: 10px; }
+        input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; }
+        button { background-color: #3498db; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #2980b9; }
+    </style>
 </head>
 <body>
-    <h1>Formulario para Crear Encounter</h1>
+    <h1>Registro de Encuentro Clínico (HIS1)</h1>
     
     <form id="encounterForm">
-        <label for="identifierSystem">Sistema de Identificación:</label><br>
-        <input type="text" id="identifierSystem" name="identifierSystem" required><br><br>
+        <!-- Sección: Datos básicos del Encounter -->
+        <div class="form-section">
+            <h2>Datos del Encuentro</h2>
+            <label for="identifierSystem">Sistema de Identificación:</label>
+            <input type="text" id="identifierSystem" name="identifierSystem" required placeholder="Ej: http://hospital.org/identifiers">
 
-        <label for="identifierValue">Valor de Identificación:</label><br>
-        <input type="text" id="identifierValue" name="identifierValue" required><br><br>
+            <label for="identifierValue">Valor de Identificación:</label>
+            <input type="text" id="identifierValue" name="identifierValue" required placeholder="Ej: ENC-12345">
 
-        <label for="status">Estado del Encounter:</label><br>
-        <input type="text" id="status" name="status" required><br><br>
+            <label for="status">Estado del Encuentro:</label>
+            <select id="status" name="status" required>
+                <option value="planned">Planeado</option>
+                <option value="in-progress">En progreso</option>
+                <option value="finished">Finalizado</option>
+            </select>
 
-        <label for="participantType">Tipo de Participante:</label><br>
-        <input type="text" id="participantType" name="participantType" required><br><br>
+            <label for="participantType">Rol del Médico:</label>
+            <input type="text" id="participantType" name="participantType" required placeholder="Ej: Médico de cabecera">
 
-        <label for="patientId">ID del Paciente:</label><br>
-        <input type="text" id="patientId" name="patientId" required><br><br>
+            <label for="patientId">ID del Paciente (FHIR Patient):</label>
+            <input type="text" id="patientId" name="patientId" required placeholder="Ej: 123">
+        </div>
 
-        <button type="submit">Crear Encounter</button>
+        <!-- Sección: Diagnóstico (Condition) -->
+        <div class="form-section">
+            <h2>Diagnóstico</h2>
+            <label for="diagnosisCode">Código del Diagnóstico (ICD-10):</label>
+            <input type="text" id="diagnosisCode" name="diagnosisCode" required placeholder="Ej: E11.65 para Diabetes Tipo 2">
+
+            <label for="diagnosisStatus">Estado Clínico:</label>
+            <select id="diagnosisStatus" name="diagnosisStatus" required>
+                <option value="active">Activo</option>
+                <option value="recurrence">Recurrente</option>
+                <option value="inactive">Inactivo</option>
+            </select>
+        </div>
+
+        <!-- Sección: Solicitudes (ServiceRequest) -->
+        <div class="form-section">
+            <h2>Solicitudes Médicas</h2>
+            <label for="requestType">Tipo de Solicitud:</label>
+            <select id="requestType" name="requestType" required>
+                <option value="laboratory">Análisis de Laboratorio (LIS)</option>
+                <option value="imaging">Estudio de Imagen (RIS)</option>
+                <option value="surgery">Procedimiento Quirúrgico</option>
+            </select>
+
+            <label for="requestCode">Código del Estudio/Procedimiento:</label>
+            <input type="text" id="requestCode" name="requestCode" required placeholder="Ej: LAB-123 (Hemograma) o SUR-456 (Apéndice)">
+        </div>
+
+        <!-- Sección: Medicamentos (MedicationRequest) -->
+        <div class="form-section">
+            <h2>Prescripción de Medicamentos</h2>
+            <label for="medicationCode">Código del Medicamento (RxNorm):</label>
+            <input type="text" id="medicationCode" name="medicationCode" required placeholder="Ej: 329528 para Amlodipino">
+
+            <label for="dosage">Instrucciones de Dosis:</label>
+            <textarea id="dosage" name="dosage" required placeholder="Ej: 5 mg cada 24 horas por 7 días"></textarea>
+        </div>
+
+        <button type="submit">Guardar Encuentro y Recursos</button>
     </form>
 
     <script src="app.js"></script>
