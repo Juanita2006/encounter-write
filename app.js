@@ -78,7 +78,7 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
 
         // Enviar todos los recursos en paralelo
         return Promise.all([
-            fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/Conditions', {
+            fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/conditions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(diagnosis)
