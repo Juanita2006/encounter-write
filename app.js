@@ -42,7 +42,7 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
     };
 
     const serviceRequest = {
-        resourceType: "ServiceRequest",
+        resourceType: "servicerequests",
         intent: "order",
         status: "active",
         subject: { reference: "Patient/" + patientId },
@@ -52,7 +52,7 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
     };
 
     const medicationRequest = {
-        resourceType: "MedicationRequest",
+        resourceType: "medicationrequests",
         status: "active",
         intent: "order",
         medicationCodeableConcept: { coding: [{ code: medicationCode }] },
@@ -78,17 +78,17 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
 
         // Enviar todos los recursos en paralelo
         return Promise.all([
-            fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/Condition', {
+            fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/Conditions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(diagnosis)
             }),
-            fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/ServiceRequest', {
+            fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/servicerequests', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(serviceRequest)
             }),
-            fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/MedicationRequest', {
+            fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/medicationrequests', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(medicationRequest)
