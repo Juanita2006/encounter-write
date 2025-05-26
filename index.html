@@ -93,7 +93,7 @@
         const participantType = document.getElementById('participantType').value;
         const patientId = document.getElementById('patientId').value;
 
-        // Datos adicionales: Diagnosis, Solicitud, Medicamento
+        // Datos Diagnosis, Solicitud y Medicamento
         const diagnosisCode = document.getElementById('diagnosisCode').value;
         const diagnosisStatus = document.getElementById('diagnosisStatus').value;
         const requestType = document.getElementById('requestType').value;
@@ -101,9 +101,9 @@
         const medicationCode = document.getElementById('medicationCode').value;
         const dosage = document.getElementById('dosage').value;
 
-        // 1. Crear el Encounter (con resourceType correcto)
+        // Construir objeto Encounter
         const encounter = {
-            resourceType: "Encounter",
+            resourceType: "Encounter",  // CORRECTO: mayúscula singular
             status: status,
             identifier: [{
                 system: identifierSystem,
@@ -117,80 +117,60 @@
             }]
         };
 
-        // 2. Crear los recursos adicionales (con resourceType y referencia correctos)
+        // Diagnosis
         const diagnosis = {
             resourceType: "Condition",
             code: { coding: [{ code: diagnosisCode }] },
             subject: { reference: "Patient/" + patientId },
-            encounter: { reference: "" }, // Se actualizará con Encounter/{id}
             clinicalStatus: { coding: [{ code: diagnosisStatus }] }
+            // Nota: No poner encounter todavía, lo añade backend
         };
 
+        // Solicitud de Servicio
         const serviceRequest = {
-            resourceType: "ServiceRequest",
+            resourceType: "ServiceRequest",  // CORRECTO: mayúscula singular
             intent: "order",
             status: "active",
             subject: { reference: "Patient/" + patientId },
-            encounter: { reference: "" },
             category: [{ coding: [{ code: requestType }] }],
             code: { coding: [{ code: requestCode }] }
+            // encounter se añade en backend
         };
 
+        // Medicación
         const medicationRequest = {
-            resourceType: "MedicationRequest",
+            resourceType: "MedicationRequest",  // CORRECTO: mayúscula singular
             status: "active",
             intent: "order",
             medicationCodeableConcept: { coding: [{ code: medicationCode }] },
             subject: { reference: "Patient/" + patientId },
-            encounter: { reference: "" },
             dosageInstruction: [{ text: dosage }]
+            // encounter se añade en backend
         };
 
-        // 3. Enviar primero el Encounter
-        fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/encounters', {
+        // Enviar todo en un solo JSON
+        const payload = {
+            encounter: encounter,
+            condition: diagnosis,
+            service_request: serviceRequest,
+            medication_request: medicationRequest
+        };
+
+        fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/encounter_with_resources', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(encounter)
+            body: JSON.stringify(payload)
         })
         .then(response => response.json())
-        .then(encounterData => {
-            const encounterId = encounterData.id;
-
-            // Actualizar referencias con el ID correcto
-            const encounterRef = "Encounter/" + encounterId;
-            diagnosis.encounter.reference = encounterRef;
-            serviceRequest.encounter.reference = encounterRef;
-            medicationRequest.encounter.reference = encounterRef;
-
-            // Enviar recursos asociados
-            return Promise.all([
-                fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/conditions', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(diagnosis)
-                }),
-                fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/servicerequests', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(serviceRequest)
-                }),
-                fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/medicationrequests', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(medicationRequest)
-                })
-            ]);
-        })
-        .then(responses => Promise.all(responses.map(res => res.json())))
         .then(data => {
-            console.log('Éxito:', data);
+            console.log('Respuesta servidor:', data);
             alert('¡Encounter y recursos asociados creados exitosamente!');
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error al crear los recursos. Revisa la consola.');
+            alert('Error al crear recursos. Revisa consola.');
         });
-       });
+      });
 
     </script>
 </body>
