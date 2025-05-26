@@ -18,7 +18,7 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
 
     // 1. Crear el Encounter
     const encounter = {
-        resourceType: "Encounter",
+        resourceType: "encounters",
         status: status,
         identifier: [{
             system: identifierSystem,
@@ -37,7 +37,7 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
         resourceType: "Condition",
         code: { coding: [{ code: diagnosisCode }] },
         subject: { reference: "Patient/" + patientId },
-        encounter: { reference: "Encounter/" }, // Se actualizará después
+        encounter: { reference: "encounters/" }, // Se actualizará después
         clinicalStatus: { coding: [{ code: diagnosisStatus }] }
     };
 
@@ -46,7 +46,7 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
         intent: "order",
         status: "active",
         subject: { reference: "Patient/" + patientId },
-        encounter: { reference: "Encounter/" }, // Se actualizará después
+        encounter: { reference: "encounters/" }, // Se actualizará después
         category: [{ coding: [{ code: requestType }] }],
         code: { coding: [{ code: requestCode }] }
     };
@@ -57,12 +57,12 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
         intent: "order",
         medicationCodeableConcept: { coding: [{ code: medicationCode }] },
         subject: { reference: "Patient/" + patientId },
-        encounter: { reference: "Encounter/" }, // Se actualizará después
+        encounter: { reference: "encounters/" }, // Se actualizará después
         dosageInstruction: [{ text: dosage }]
     };
 
     // 3. Enviar primero el Encounter para obtener su ID
-    fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/Encounter', {
+    fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/encounters', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(encounter)
@@ -72,9 +72,9 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
         const encounterId = encounterData.id;
 
         // Actualizar referencias en los otros recursos
-        diagnosis.encounter.reference = "Encounter/" + encounterId;
-        serviceRequest.encounter.reference = "Encounter/" + encounterId;
-        medicationRequest.encounter.reference = "Encounter/" + encounterId;
+        diagnosis.encounter.reference = "encounters/" + encounterId;
+        serviceRequest.encounter.reference = "encounters/" + encounterId;
+        medicationRequest.encounter.reference = "encounters/" + encounterId;
 
         // Enviar todos los recursos en paralelo
         return Promise.all([
