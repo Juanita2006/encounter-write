@@ -1,14 +1,14 @@
 document.getElementById('encounterForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    // Datos del Encounter (existente)
+    // Datos del Encounter
     const identifierSystem = document.getElementById('identifierSystem').value;
     const identifierValue = document.getElementById('identifierValue').value;
     const status = document.getElementById('status').value;
     const participantType = document.getElementById('participantType').value;
     const patientId = document.getElementById('patientId').value;
 
-    // Datos nuevos: Diagnosis, Solicitud, Medicamento
+    // Datos adicionales: Diagnosis, Solicitud, Medicamento
     const diagnosisCode = document.getElementById('diagnosisCode').value;
     const diagnosisStatus = document.getElementById('diagnosisStatus').value;
     const requestType = document.getElementById('requestType').value;
@@ -16,9 +16,9 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
     const medicationCode = document.getElementById('medicationCode').value;
     const dosage = document.getElementById('dosage').value;
 
-    // 1. Crear el Encounter
+    // 1. Crear el Encounter (con resourceType correcto)
     const encounter = {
-        resourceType: "encounters",
+        resourceType: "Encounter",
         status: status,
         identifier: [{
             system: identifierSystem,
@@ -32,36 +32,36 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
         }]
     };
 
-    // 2. Crear los recursos adicionales
+    // 2. Crear los recursos adicionales (con resourceType y referencia correctos)
     const diagnosis = {
         resourceType: "Condition",
         code: { coding: [{ code: diagnosisCode }] },
         subject: { reference: "Patient/" + patientId },
-        encounter: { reference: "encounters/" }, // Se actualizará después
+        encounter: { reference: "" }, // Se actualizará con Encounter/{id}
         clinicalStatus: { coding: [{ code: diagnosisStatus }] }
     };
 
     const serviceRequest = {
-        resourceType: "servicerequests",
+        resourceType: "ServiceRequest",
         intent: "order",
         status: "active",
         subject: { reference: "Patient/" + patientId },
-        encounter: { reference: "encounters/" }, // Se actualizará después
+        encounter: { reference: "" },
         category: [{ coding: [{ code: requestType }] }],
         code: { coding: [{ code: requestCode }] }
     };
 
     const medicationRequest = {
-        resourceType: "medicationrequests",
+        resourceType: "MedicationRequest",
         status: "active",
         intent: "order",
         medicationCodeableConcept: { coding: [{ code: medicationCode }] },
         subject: { reference: "Patient/" + patientId },
-        encounter: { reference: "encounters/" }, // Se actualizará después
+        encounter: { reference: "" },
         dosageInstruction: [{ text: dosage }]
     };
 
-    // 3. Enviar primero el Encounter para obtener su ID
+    // 3. Enviar primero el Encounter
     fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/encounters', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -71,12 +71,13 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
     .then(encounterData => {
         const encounterId = encounterData.id;
 
-        // Actualizar referencias en los otros recursos
-        diagnosis.encounter.reference = "encounters/" + encounterId;
-        serviceRequest.encounter.reference = "encounters/" + encounterId;
-        medicationRequest.encounter.reference = "encounters/" + encounterId;
+        // Actualizar referencias con el ID correcto
+        const encounterRef = "Encounter/" + encounterId;
+        diagnosis.encounter.reference = encounterRef;
+        serviceRequest.encounter.reference = encounterRef;
+        medicationRequest.encounter.reference = encounterRef;
 
-        // Enviar todos los recursos en paralelo
+        // Enviar recursos asociados
         return Promise.all([
             fetch('https://hl7-fhir-ehr-juanita-123.onrender.com/conditions', {
                 method: 'POST',
@@ -105,6 +106,3 @@ document.getElementById('encounterForm').addEventListener('submit', function(eve
         alert('Error al crear los recursos. Revisa la consola.');
     });
 });
-
-
-
